@@ -1,5 +1,6 @@
 package com.example.noteapp;
 
+//Định nghĩa Model
 public class Model {
 
     String title;
@@ -11,6 +12,7 @@ public class Model {
         this.description = description;
         this.id = id;
     }
+
 
     public String getTitle() {
         return title;

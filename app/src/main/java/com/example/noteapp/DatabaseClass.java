@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 
 public class DatabaseClass extends SQLiteOpenHelper {
 
+    //Khai báo tên các biến final
     Context context;
     private static final String DatabaseName = "MyNotes.db";
     private static final int DatabaseVersion = 1;
@@ -20,26 +21,33 @@ public class DatabaseClass extends SQLiteOpenHelper {
     private static final String ColumnTitle = "title";
     private static final String ColumnDescription = "description";
 
+    //Tạo DatabaseClass
     public DatabaseClass(@Nullable Context context) {
         super(context, DatabaseName, null, DatabaseVersion);
         this.context = context;
     }
 
+    //Method conCreate gọi ra khi Activity được chạy
     @Override
     public void onCreate(SQLiteDatabase db) {
+
+        //Khai báo câu lệnh để tạo mới table
         String query = "CREATE TABLE " + TableName +
                 " (" + ColumnId + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ColumnTitle + " TEXT, " +
                 ColumnDescription + " TEXT);";
+        //Sử dụng execSQL để chạy câu lệnh query
         db.execSQL(query);
     }
 
+    //Void onUpgrade sẽ drop table nếu có và tạo mới db
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL("DROP TABLE IF EXISTS " + TableName);
         onCreate(db);
     }
 
+    //Void addNotes để thêm note mới vào db
     public void addNotes(String title, String description){
         SQLiteDatabase db = this.getWritableDatabase();
 
@@ -56,6 +64,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
         }
     }
 
+    //Void readAllData trả về một curson đọc câu lệnh query để lấy mọi dữ liệu từ db
     Cursor readAllData() {
         String query = "SELECT * FROM " + TableName;
         SQLiteDatabase database = this.getReadableDatabase();
@@ -67,12 +76,14 @@ public class DatabaseClass extends SQLiteOpenHelper {
         return cursor;
     }
 
+    //Xóa table trong db
     void deleteAllNotes() {
         SQLiteDatabase database = this.getWritableDatabase();
         String query = "DELETE FROM " + TableName;
         database.execSQL(query);
     }
 
+    //UpdateNote
     void updateNotes(String title, String description, String id) {
         SQLiteDatabase database = this.getWritableDatabase();
 
@@ -89,6 +100,7 @@ public class DatabaseClass extends SQLiteOpenHelper {
 
     }
 
+    //Xóa một dòng trong db bằng id
     public void deleteSingleItem(String id) {
         SQLiteDatabase database = this.getWritableDatabase();
 
